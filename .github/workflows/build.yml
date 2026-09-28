@@ -30,7 +30,32 @@ jobs:
 
       - name: Create dummy google-services.json
         run: |
-          echo '{"project_info":{"project_id":"dummy"},"client":[{"client_info":{"mobilesdk_app_id":"dummy","android_client_info":{"package_name":"com.example.voiceassistant"}},"api_key":[{"current_key":"dummy"}]}],"configuration_version":"1"}' > app/google-services.json
+          PKG=$(grep -oP 'applicationId\s*=\s*"\K[^"]+' app/build.gradle.kts || grep -oP 'namespace\s*=\s*"\K[^"]+' app/build.gradle.kts || echo "com.example.app")
+          cat <<EOF > app/google-services.json
+          {
+            "project_info": {
+              "project_number": "123456789012",
+              "project_id": "dummy-project",
+              "storage_bucket": "dummy-project.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:123456789012:android:1234567890abcdef",
+                  "android_client_info": {
+                    "package_name": "$PKG"
+                  }
+                },
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyDummyKeyForBuild1234567890123456"
+                  }
+                ]
+              }
+            ],
+            "configuration_version": "1"
+          }
+          EOF
 
       - name: Build APK
         run: ./gradlew assembleDebug
@@ -40,3 +65,4 @@ jobs:
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
+          
