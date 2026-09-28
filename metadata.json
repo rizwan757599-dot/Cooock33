@@ -1,0 +1,6 @@
+{
+  "name": "Awaz AI",
+  "description": "Android voice assistant app for Hindi and Hinglish commands with Gemini AI intent recognition and app actions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
